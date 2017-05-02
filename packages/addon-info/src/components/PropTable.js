@@ -3,13 +3,20 @@ import React from 'react';
 import PropVal from './PropVal';
 
 const PropTypesMap = new Map();
-for (const typeName in PropTypes) {
-  if (!PropTypes.hasOwnProperty(typeName)) {
-    continue;
+const bootstrapPropTypesMap = proptypes => {
+  for (const typeName in proptypes) {
+    if (!proptypes.hasOwnProperty(typeName)) {
+      continue;
+    }
+    const type = proptypes[typeName];
+    PropTypesMap.set(type, typeName);
+    PropTypesMap.set(type.isRequired, typeName);
   }
-  const type = PropTypes[typeName];
-  PropTypesMap.set(type, typeName);
-  PropTypesMap.set(type.isRequired, typeName);
+};
+
+bootstrapPropTypesMap(PropTypes);
+if (React.PropTypes) {
+  bootstrapPropTypesMap(React.PropTypes);
 }
 
 const stylesheet = {
